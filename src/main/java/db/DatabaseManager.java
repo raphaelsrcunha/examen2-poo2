@@ -1,6 +1,7 @@
 package db;
 
 import model.Animal;
+import model.Enclos;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class DatabaseManager implements IZooDataAccess {
         try {
             connection = DriverManager.getConnection(DB_URL);
             initializeTables();
+            populateTables();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -61,19 +63,19 @@ public class DatabaseManager implements IZooDataAccess {
         }
     }
 
-    /*
+    
     private void populateTables() {
         try (Statement stmt = connection.createStatement()) {
-            stmt.execute("INSERT INTO Animal (nom, espece, age, regimeAlimentaire) VALUES ('Simba', 'Lion', 5, 'Carnivore')");
-            stmt.execute("INSERT INTO Animal (nom, espece, age, regimeAlimentaire) VALUES ('Dumbo', 'Elephant', 10, 'Herbivore')");
+            //stmt.execute("INSERT INTO Animal (nom, espece, age, regimeAlimentaire) VALUES ('Simba', 'Lion', 5, 'Carnivore')");
+            //stmt.execute("INSERT INTO Animal (nom, espece, age, regimeAlimentaire) VALUES ('Dumbo', 'Elephant', 10, 'Herbivore')");
             stmt.execute("INSERT INTO Enclos (nom, capacite, typeHabitat) VALUES ('Savane', 10, 'Prairie')");
             stmt.execute("INSERT INTO Enclos (nom, capacite, typeHabitat) VALUES ('Jungle', 8, 'Forest')");
-            stmt.execute("INSERT INTO Soigneur (nom, specialite) VALUES ('Jean Dupont', 'Mammals')");
-            stmt.execute("INSERT INTO Soigneur (nom, specialite) VALUES ('Marie Curie', 'Reptiles')");
+            //stmt.execute("INSERT INTO Soigneur (nom, specialite) VALUES ('Jean Dupont', 'Mammals')");
+            //stmt.execute("INSERT INTO Soigneur (nom, specialite) VALUES ('Marie Curie', 'Reptiles')");
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
     @Override
     public Animal getAnimal(int id) {
@@ -143,4 +145,27 @@ public class DatabaseManager implements IZooDataAccess {
             e.printStackTrace();
         }
     }
+    
+    public List<Enclos> getAllEnclos() {
+        List<Enclos> enclosList = new ArrayList<>();
+        String query = "SELECT * FROM enclos";
+
+        try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                Enclos enclos = new Enclos(
+                    rs.getInt("id"),
+                    rs.getString("nom"),
+                    rs.getInt("capacite"),
+                    rs.getString("typeHabitat")
+                );
+                enclosList.add(enclos);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return enclosList;
+    }
+
 }

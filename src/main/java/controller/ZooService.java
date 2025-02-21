@@ -2,6 +2,7 @@ package controller;
 
 import db.DatabaseManager;
 import model.Animal;
+import model.Enclos;
 
 import java.util.List;
 
@@ -43,4 +44,10 @@ public class ZooService {
             throw new IllegalArgumentException("ID inválido para exclusão de animal.");
         }
     }
+    
+    public List<Enclos> getAllEnclos() {
+    	return dbManager.getAllEnclos();
+    }
+    
+    
 }

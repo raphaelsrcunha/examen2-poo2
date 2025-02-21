@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import controller.ZooService;
 import db.DatabaseManager;
 import model.Animal;
+import model.Enclos;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -33,6 +34,7 @@ public class MainFrame extends JFrame {
 	private JTextField textFieldAge;
 	private JTextField textFieldRegimeAlimentaire;
 	private DefaultTableModel tableModel;
+	private DefaultTableModel tableModelEnclos;
 	private DatabaseManager databaseManager;
 	
 	private ZooService service;
@@ -44,7 +46,7 @@ public class MainFrame extends JFrame {
 					MainFrame frame = new MainFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					e.printStackTrace(); 
 				}
 			}
 		});
@@ -217,6 +219,18 @@ public class MainFrame extends JFrame {
 		btnRefresh.setBounds(240, 182, 138, 23);
 		contentPane.add(btnRefresh);
 		
+		JButton btnListeDesEnclos = new JButton("Liste des Enclos");
+		btnListeDesEnclos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tableModelEnclos =  createTableEnclosModel();
+				tableAnimaux.setModel(tableModelEnclos);
+				fillTableEnclos();
+				
+			}
+		});
+		btnListeDesEnclos.setBounds(239, 233, 138, 23);
+		contentPane.add(btnListeDesEnclos);
+		
 		//Appeler les fonctions qui vont construir les choses
 		fillTableAnimaux();
 	}
@@ -339,6 +353,31 @@ public class MainFrame extends JFrame {
 		tableModel.addColumn("Regime Alimentaire");
 		
 		return tableModel;
+		
+	}
+	
+	private void fillTableEnclos() {
+		tableModelEnclos.setRowCount(0);
+		List<Enclos> enclosList = service.getAllEnclos();
+		for (Enclos enclos : enclosList) {
+			tableModelEnclos.addRow(new Object[]{
+				enclos.getId(),
+				enclos.getNom(),
+				enclos.getTypeHabitat(),
+				enclos.getCapacite()
+			});
+		}
+	}
+	
+	private DefaultTableModel createTableEnclosModel() {
+		DefaultTableModel model = new DefaultTableModel();
+		
+		model.addColumn("Id");
+		model.addColumn("Nom");
+		model.addColumn("Capacité");
+		model.addColumn("Type");
+		return model;
 	}
 	
 }
+

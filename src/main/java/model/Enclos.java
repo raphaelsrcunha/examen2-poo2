@@ -7,6 +7,14 @@ public class Enclos {
 	private int capacite;
 	private String typeHabitat;
 	
+	public Enclos(int id, String nom, int capacite, String typeHabitat) {
+		super();
+		this.id = id;
+		this.nom = nom;
+		this.capacite = capacite;
+		this.typeHabitat = typeHabitat;
+	}
+
 	public int getId() {
 		return id;
 	}
