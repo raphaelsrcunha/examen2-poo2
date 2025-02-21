@@ -16,7 +16,7 @@ public class DatabaseManager implements IZooDataAccess {
         try {
             connection = DriverManager.getConnection(DB_URL);
             initializeTables();
-            populateTables();
+            populateTables(); //je fais ça pour populate les tables
         } catch (SQLException e) {
             e.printStackTrace();
         }
